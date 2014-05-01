@@ -338,12 +338,15 @@ public class GistService extends GitHubService {
 	/**
 	 * Get gist comment with id
 	 *
+	 * @param gistId
 	 * @param commentId
 	 * @return comment
 	 * @throws IOException
 	 */
-	public Comment getComment(long commentId) throws IOException {
-		StringBuilder uri = new StringBuilder(SEGMENT_GISTS + SEGMENT_COMMENTS);
+	public Comment getComment(String gistId, long commentId) throws IOException {
+		StringBuilder uri = new StringBuilder(SEGMENT_GISTS);
+		uri.append('/').append(gistId);
+		uri.append(SEGMENT_COMMENTS);
 		uri.append('/').append(commentId);
 		GitHubRequest request = createRequest();
 		request.setUri(uri);
@@ -354,15 +357,18 @@ public class GistService extends GitHubService {
 	/**
 	 * Edit gist comment
 	 *
+	 * @param gistId
 	 * @param comment
 	 * @return edited comment
 	 * @throws IOException
 	 */
-	public Comment editComment(Comment comment) throws IOException {
+	public Comment editComment(String gistId, Comment comment) throws IOException {
 		if (comment == null)
 			throw new IllegalArgumentException("Comment cannot be null"); //$NON-NLS-1$
 
-		StringBuilder uri = new StringBuilder(SEGMENT_GISTS + SEGMENT_COMMENTS);
+		StringBuilder uri = new StringBuilder(SEGMENT_GISTS);
+		uri.append('/').append(gistId);
+		uri.append(SEGMENT_COMMENTS);
 		uri.append('/').append(comment.getId());
 		return client.post(uri.toString(), comment, Comment.class);
 	}
@@ -370,11 +376,14 @@ public class GistService extends GitHubService {
 	/**
 	 * Delete the Gist comment with the given id
 	 *
+	 * @param gistId
 	 * @param commentId
 	 * @throws IOException
 	 */
-	public void deleteComment(long commentId) throws IOException {
-		StringBuilder uri = new StringBuilder(SEGMENT_GISTS + SEGMENT_COMMENTS);
+	public void deleteComment(String gistId, long commentId) throws IOException {
+		StringBuilder uri = new StringBuilder(SEGMENT_GISTS);
+		uri.append('/').append(gistId);
+		uri.append(SEGMENT_COMMENTS);
 		uri.append('/').append(commentId);
 		client.delete(uri.toString());
 	}

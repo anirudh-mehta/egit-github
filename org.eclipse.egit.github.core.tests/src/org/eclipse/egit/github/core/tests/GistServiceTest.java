@@ -274,7 +274,7 @@ public class GistServiceTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void editGistCommentNullComment() throws IOException {
-		gistService.editComment(null);
+		gistService.editComment(1, null);
 	}
 
 	/**
@@ -286,8 +286,8 @@ public class GistServiceTest {
 	public void editGistComment() throws IOException {
 		Comment comment = new Comment();
 		comment.setId(48).setBody("new body");
-		gistService.editComment(comment);
-		verify(gitHubClient).post("/gists/comments/48", comment, Comment.class);
+		gistService.editComment(1, comment);
+		verify(gitHubClient).post("/gists/1/comments/48", comment, Comment.class);
 	}
 
 	/**
@@ -297,9 +297,9 @@ public class GistServiceTest {
 	 */
 	@Test
 	public void getGistComment() throws IOException {
-		gistService.getComment(59);
+		gistService.getComment(1, 59);
 		GitHubRequest request = new GitHubRequest();
-		request.setUri("/gists/comments/59");
+		request.setUri("/gists/1/comments/59");
 		verify(gitHubClient).get(request);
 	}
 
@@ -310,8 +310,8 @@ public class GistServiceTest {
 	 */
 	@Test
 	public void deleteGistComment() throws IOException {
-		gistService.deleteComment(1234);
-		verify(gitHubClient).delete("/gists/comments/1234");
+		gistService.deleteComment(1,1234);
+		verify(gitHubClient).delete("/gists/1/comments/1234");
 	}
 
 	/**
